@@ -1,3 +1,4 @@
+
 import streamlit as st
 from backend import chatbot, retrieve_all_threads, generate_user_thread_id
 from langchain_core.messages import HumanMessage, AIMessage  # <-- Includes AIMessage
@@ -6,6 +7,7 @@ import hashlib
 from twilio.rest import Client
 from dotenv import load_dotenv
 import os
+from streamlit.errors import StreamlitSecretNotFoundError  # Add this import
 
 load_dotenv()
 
@@ -15,7 +17,7 @@ try:
     twilio_account_sid = st.secrets['TWILIO_ACCOUNT_SID']
     twilio_auth_token = st.secrets['TWILIO_AUTH_TOKEN']
     twilio_phone = st.secrets['TWILIO_PHONE_NUMBER']
-except KeyError:
+except (KeyError, StreamlitSecretNotFoundError):  # Catch both KeyError and StreamlitSecretNotFoundError
     # Fallback for local development (if .env is loaded)
     twilio_account_sid = os.getenv('TWILIO_ACCOUNT_SID')
     twilio_auth_token = os.getenv('TWILIO_AUTH_TOKEN')
