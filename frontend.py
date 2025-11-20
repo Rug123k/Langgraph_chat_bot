@@ -10,8 +10,22 @@ import os
 load_dotenv()
 
 # -------------------- Twilio Setup --------------------
-twilio_client = Client(os.getenv('TWILIO_ACCOUNT_SID'), os.getenv('TWILIO_AUTH_TOKEN'))
-TWILIO_PHONE = os.getenv('TWILIO_PHONE_NUMBER')
+# Use st.secrets for deployed apps; fallback to os.getenv() for local dev
+try:
+    twilio_account_sid = st.secrets['TWILIO_ACCOUNT_SID']
+    twilio_auth_token = st.secrets['TWILIO_AUTH_TOKEN']
+    twilio_phone = st.secrets['TWILIO_PHONE_NUMBER']
+except KeyError:
+    # Fallback for local development (if .env is loaded)
+    twilio_account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+    twilio_auth_token = os.getenv('TWILIO_AUTH_TOKEN')
+    twilio_phone = os.getenv('TWILIO_PHONE_NUMBER')
+
+if not all([twilio_account_sid, twilio_auth_token, twilio_phone]):
+    st.error("Twilio credentials not found. Please check your secrets or .env file.")
+else:
+    twilio_client = Client(twilio_account_sid, twilio_auth_token)
+    TWILIO_PHONE = twilio_phone
 
 # -------------------- Utility Functions --------------------
 def hash_phone(phone: str) -> str:
