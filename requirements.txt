@@ -5,5 +5,5 @@ langchain-community
 langchain-openai
 python-dotenv
 langgraph-checkpoint-sqlite
-twilio 
 pydantic
+bcrypt
