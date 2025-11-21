@@ -40,7 +40,7 @@ def reset_chat():
 
 # -------------------- Auth UI --------------------
 if not st.session_state["logged_in"]:
-    st.title("🔐 Login to LangGraph Chatbot")
+    st.title("🔐 Login to LangGraph Chatbot V1")
 
     tabs = st.tabs(["Login", "Sign up"])
 
